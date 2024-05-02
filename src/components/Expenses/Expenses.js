@@ -1,7 +1,11 @@
-import { useState } from "react";
-import ExpenseItem from "./ExpenseItem";
-import ExpenseFilter from "./ExpenseFilter";
-import Chart from "../Chart/Chart";
+import React,{ useState , Suspense } from "react";
+// import ExpenseItem from "./ExpenseItem";
+// import ExpenseFilter from "./ExpenseFilter";
+// import Chart from "../Chart/Chart";
+const ExpenseItem = React.lazy(() => import("./ExpenseItem"))
+const ExpenseFilter = React.lazy(() => import("./ExpenseFilter"))
+const Chart = React.lazy(() => import("../Chart/Chart"))
+
 
 const Expenses = (props) => {
   const [year, setYear] = useState("2022");
@@ -13,15 +17,27 @@ const Expenses = (props) => {
   if (filteredArray.length === 0) {
     return (
       <>
+      <Suspense fallback={<p>Loading...</p>}>
+
         <Chart data={filteredArray} />
+      </Suspense>
+      <Suspense fallback={<p>Loading...</p>}>
+
         <ExpenseFilter value={year} postYear={setYear} />
+        </Suspense>
         <p className="no-data">No expenses found !!</p>
       </>
     );
   }
   return (
     <>
+      <Suspense fallback={<p>Loading...</p>}>
+
       <Chart data={filteredArray} />
+        </Suspense>
+
+      <Suspense fallback={<p>Loading...</p>}>
+
       <ExpenseFilter value={year} postYear={setYear} />
       {filteredArray.map((expenses) => (
         <ExpenseItem
@@ -31,6 +47,8 @@ const Expenses = (props) => {
           date={expenses.date}
         />
       ))}
+        </Suspense>
+
     </>
   );
 };

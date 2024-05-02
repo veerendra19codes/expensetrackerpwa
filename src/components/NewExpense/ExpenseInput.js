@@ -1,6 +1,7 @@
-// import { useState } from "react";
-import ExpenseForm from "./ExpenseForm";
+import React,{ Suspense } from "react";
+// import ExpenseForm from "./ExpenseForm";
 import "./Expenses-inputStyles/ExpensesInput.css";
+const ExpenseForm = React.lazy(() => import("./ExpenseForm"))
 
 const ExpenseInput = (props) => {
   const PostDataHandler = (data) => {
@@ -26,7 +27,9 @@ const ExpenseInput = (props) => {
 
   return (
     <div className="form-container">
+      <Suspense fallback={<p>Loading...</p>}>
       <ExpenseForm postData={PostDataHandler} />
+      </Suspense>
     </div>
   );
 };

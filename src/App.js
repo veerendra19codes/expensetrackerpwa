@@ -1,7 +1,9 @@
-import { useState } from "react";
+import React,{ useState, Suspense } from "react";
 
-import Expenses from "./components/Expenses/Expenses";
-import ExpenseInput from "./components/NewExpense/ExpenseInput";
+// import Expenses from "./components/Expenses/Expenses";
+// import ExpenseInput from "./components/NewExpense/ExpenseInput";
+const Expenses = React.lazy(() => import("./components/Expenses/Expenses"))
+const ExpenseInput = React.lazy(() => import("./components/NewExpense/ExpenseInput"))
 
 const getCookie = (c_name) => {
   if (document.cookie.length > 0) {
@@ -41,8 +43,14 @@ const App = () => {
 
   return (
     <div className="main-container">
+      <Suspense fallback={<p>Loading...</p>}>
       <ExpenseInput itemData={createItem} />
+
+      </Suspense>
+      <Suspense fallback={<p>Loading...</p>}>
+
       <Expenses expenses={expenses === "" ? [] : expenses} />
+      </Suspense>
     </div>
   );
 };
